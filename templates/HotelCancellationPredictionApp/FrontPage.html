@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+		body{
+		    background-image: url("https://wallpapersdsc.net/wp-content/uploads/2017/04/Hotel-Photos.jpg");
+		    background-size:2000px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    }
+		input{
+				border:none;
+				border-bottom:0.5px solid black;
+				outline: none;
+			}
+		table{
+			border:1px solid black;
+			padding:60px 70px;
+			margin-left: auto;
+			margin-right: 300px;
+			margin-top:15%;
+			background: rgb(240, 248, 255, 0.7);
+		}
+
+		form{
+
+		}
+		input[type="submit"]{padding:5px 9px;color: blue;text-align:center;}
+    </style>
+</head>
+<body>
+    <form id="details" method="POST">{% csrf_token %}
+        <table>
+            <tr><td><label>Name</label></td></tr>
+            <tr><td><input type="text" name="name" id="name" placeholder="Enter Your Name" required></td></tr>
+            <tr><td><label>Phone Number</label></td></tr>
+            <tr><td><input type="text" name="phoneNumber" id="phoneNumber" placeholder="PhoneNumber" required></td></tr>
+            <tr><td><label>Rooms</label></td></tr>
+            <tr><td><input type="text" name="totalRooms" id="totalRooms" placeholder="Total rooms Needed" required></td></tr>
+            <tr><td><label>Adults</label></td></tr>
+            <tr><td><input type="text" name="adults" id="adults" placeholder="No. of adults" required></td></tr>
+            <tr><td><label>Children</label></td></tr>
+            <tr><td><input type="text" name="children" id="children" placeholder="No. of children" required></td></tr>
+            <tr><td><label>Booking Date</label></td></tr>
+            <tr><td><input type="text" name="bookingDate" id="bookingDate" placeholder="dd/mm/yyyy" required></td></tr>
+            <tr><td><label>Previous Cancellations</label></td></tr>
+            <tr><td><input type="text" name="previousCancellations" id="previousCancellations" placeholder="0 if none" required></td></tr>
+            <tr><td><label>Car Parking Spaces</label></td></tr>
+            <tr><td><input type="text" name="carParkingSpaces" id="carParkingSpaces" placeholder="Total parking spaces Needed" required></td></tr>
+            <tr><td><input type="submit" name="submit" value="submit"></td></tr>
+        </table>
+    </form>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script>
+        $('form').submit(function(event){
+            event.preventDefault();
+            $.ajax({
+                    url:"{% url 'data_collect' %}",
+                    type:'post',
+                    data:{
+                        adults: $('#adults').val(),
+                        children: $('#children').val(),
+                        bookingDate: $('#bookingDate').val(),
+                        previousCancellations: $('#previousCancellations').val(),
+                        carParkingSpaces: $('#carParkingSpaces').val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success:function(response){
+                        var result = response['result']
+                        if(result == 0){
+                            swal({
+                                title:"Positive",
+                                text:"Less chances of cancellation",
+                                icon:"success",
+                                type:"success"
+                            })
+                        }else{
+                            swal({
+                                title:"Warning",
+                                text:"Chances of cancellation",
+                                icon:"error"
+                            })
+                        }
+
+                    },
+                    failure:function(error){
+                        alert("error occurred while request");
+                    }
+            });
+        })
+    </script>
+</body>
+</html>
+
+<!--name:$('#name').val(),-->
+<!--phoneNumber:$('#phoneNumber').val(),-->
+<!--totalRooms:$('#totalRooms').val(),-->
+<!--adults:$('#name').adults(),-->
+<!--children:$('#children').val(),-->
+<!--bookingDate:$('#bookingDate').val(),-->
+<!--previousCancellations:$('#previousCancellations').val(),-->
+<!--carParkingSpaces:$('#carParkingSpaces').val(),-->

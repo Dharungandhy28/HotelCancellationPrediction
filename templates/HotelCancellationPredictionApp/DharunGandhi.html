@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Booking</title>
+    <style type="text/css">
+
+        body{
+            text-align:center;
+            margin-top:25%;
+            background-image: url("https://wallpapersdsc.net/wp-content/uploads/2017/04/Hotel-Photos.jpg");
+            background-size:2000px;
+        }
+        button{
+            padding: 10px 10px;
+            width:250px;
+            background-color: green;
+            color:white;
+            border:none;
+            border-radius:50px;
+        }
+        button:hover{
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST" action="{% url 'front_page' %}">{% csrf_token %}
+        <button type="submit">Book Your Room</button>
+    </form>
+</body>
+</html>
